@@ -1,7 +1,7 @@
 import DeeperMeasurementsCounter from './day-01-sonar-sweep';
 import { depthReadings } from './day-01-sonar-sweep.input';
 
-describe('Calc', () => {
+describe('Day 1 - Sonar Sweep', () => {
 	test('should return 0 for empty reading', () => {
 		const measurer = new DeeperMeasurementsCounter([]);
 		expect(measurer.countDeeperMeasurements()).toBe(0);
