@@ -4,6 +4,7 @@ module.exports = {
 		'browser': true,
 		'es2021': true
 	},
+	'ignorePatterns': ['.eslintrc.js', '**/vendor/*.js'],
 	'extends': [
 		'eslint:recommended',
 		'plugin:@typescript-eslint/recommended'
