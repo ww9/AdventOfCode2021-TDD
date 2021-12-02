@@ -1,0 +1,29 @@
+{
+	"name": "adventofcode2021-typescript-jest-tdd",
+	"version": "1.0.0",
+	"description": "",
+	"main": "index.js",
+	"scripts": {
+		"build": "tsc",
+		"test": "jest",
+		"lint": "eslint ./ --ext .ts",
+		"tdd": "npm run test -- --watch --verbose"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git@github.com-ww9:ww9/AdventOfCode2021-TDD.git"
+	},
+	"keywords": [],
+	"author": "",
+	"license": "ISC",
+	"devDependencies": {
+		"@types/jest": "^27.0.3",
+		"@typescript-eslint/eslint-plugin": "^5.5.0",
+		"@typescript-eslint/parser": "^5.5.0",
+		"eslint": "^8.3.0",
+		"husky": "^7.0.4",
+		"jest": "^27.4.3",
+		"ts-jest": "^27.0.7",
+		"typescript": "^4.5.2"
+	}
+}
