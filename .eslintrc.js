@@ -34,6 +34,6 @@ module.exports = {
 			'error',
 			'always'
 		],
-		'prefer-const': 1
+		'prefer-const': 'off'
 	}
 };
