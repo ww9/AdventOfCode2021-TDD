@@ -1,4 +1,4 @@
-import DeeperMeasurementsCounter from './day-01-sonar-sweep';
+import { DeeperMeasurementsCounter } from './day-01-sonar-sweep';
 import { depthReadings } from './day-01-sonar-sweep.input';
 
 describe('Day 1 - Sonar Sweep', () => {
