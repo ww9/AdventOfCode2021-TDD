@@ -1,4 +1,10 @@
-export default class DiagnosticReportCalculator {
+export const EMPTY_READINGS_ERROR = new Error('Readings were empty');
+export const UNCERTAIN_OUTCOME_ERROR = new Error('Unable to determine outcome because the number of 0 bits are equal to 1 bits');
+export const INVALID_BINARY_CHARACTER_ERROR = new Error('Invalid binary character. Exptected 0 or 1');
+export const COULD_NOT_DETERMINE_OXYGEN_RATING_ERROR = new Error('Could not determine oxygen rating');
+export const COULD_NOT_DETERMINE_CO2_SCRUBBER_RATING_ERROR = new Error('Could not determines CO2 Scrubber rating');
+
+export class DiagnosticReportCalculator {
 	private binaryNumbers: string[] = [];
 
 	constructor(binaryNumbers: string[]) {
@@ -40,7 +46,7 @@ export default class DiagnosticReportCalculator {
 	*/
 	computeEpsilonAndGamma(): [gamma: number, epsilon: number] {
 		if (this.binaryNumbers.length <= 0) {
-			throw new Error('Readings were empty');
+			throw EMPTY_READINGS_ERROR;
 		}
 		const inputLength = this.binaryNumbers[0].length;
 		let gammaBinary = '';
@@ -56,7 +62,7 @@ export default class DiagnosticReportCalculator {
 				}
 			}
 			if (zeroesCount == onesCount) {
-				throw new Error('Unable to determine outcome because the number of 0 bits are equal to 1 bits for position ' + i);
+				throw UNCERTAIN_OUTCOME_ERROR;
 			}
 			gammaBinary += zeroesCount > onesCount ? '0' : '1';
 			epsilonBinary += zeroesCount > onesCount ? '1' : '0';
@@ -111,7 +117,7 @@ export default class DiagnosticReportCalculator {
 					numbersWithOne.push(binaryNumber);
 					break;
 				default:
-					throw new Error(binaryNumber[digitPositionToAnalyze] + ' is not a valid binary character. Exptected 0 or 1.');
+					throw INVALID_BINARY_CHARACTER_ERROR;
 			}
 		}
 		let keepNumbersWith: '0' | '1';
@@ -136,7 +142,7 @@ export default class DiagnosticReportCalculator {
 			const currentLength = oxygenBinaryNumbers.length;
 			oxygenBinaryNumbers = this.filterForRating(oxygenBinaryNumbers, i, true, '1');
 			if (oxygenBinaryNumbers.length == currentLength) {
-				throw new Error('Could not determines oxygen rating.');
+				throw COULD_NOT_DETERMINE_OXYGEN_RATING_ERROR;
 			}
 		}
 
@@ -145,7 +151,7 @@ export default class DiagnosticReportCalculator {
 			const currentLength = co2ScrubberBinaryNumbers.length;
 			co2ScrubberBinaryNumbers = this.filterForRating(co2ScrubberBinaryNumbers, i, false, '0');
 			if (co2ScrubberBinaryNumbers.length == currentLength) {
-				throw new Error('Could not determines CO2 Scrubber rating.');
+				throw COULD_NOT_DETERMINE_CO2_SCRUBBER_RATING_ERROR;
 			}
 		}
 

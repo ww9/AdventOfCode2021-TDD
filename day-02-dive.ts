@@ -1,3 +1,5 @@
+export const UNNEXPECTED_COMMAND_ERROR = new Error('Received unexpected command');
+
 export const enum Commands {
 	forward = 'forward',
 	up = 'up',
@@ -59,7 +61,7 @@ export default class DiverCommandsInterpreter {
 					break;
 
 				default:
-					throw new Error('Received unexpected command: ' + this.commands[i][0]);
+					throw UNNEXPECTED_COMMAND_ERROR;
 			}
 		}
 		return [offsetX, offsetY];
@@ -106,7 +108,7 @@ export default class DiverCommandsInterpreter {
 					break;
 
 				default:
-					throw new Error('Received unexpected command: ' + this.commands[i][0]);
+					throw UNNEXPECTED_COMMAND_ERROR;
 			}
 		}
 		return [offsetX, offsetY];
