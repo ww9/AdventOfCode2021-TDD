@@ -1,11 +1,13 @@
-import { BingoSolver, NO_WINNING_BOARDS_ERROR } from './day-04-bingo-squid';
+import { BingoSolver, NO_BOARDS_PROVIDED_ERROR } from './day-04-bingo-squid';
 import { boards, drawnNumbers } from './day-04-bingo-squid.input';
 import { exampleBoards, exampleDrawnNumbers } from './day-04-bingo-squid.example';
 
 describe('Day 4 - Bingo Squid', () => {
-	test('should throw NO_WINNING_BOARDS_ERROR for empty boards', () => {
-		const solver = new BingoSolver([], []);
-		expect(() => solver.computeWinningBoard()).toThrowError(NO_WINNING_BOARDS_ERROR);
+	test('should throw NO_BOARDS_PROVIDED_ERROR for empty boards', () => {
+		expect(() => {
+			const solver = new BingoSolver([], []);
+			solver.computeWinningBoard();
+		}).toThrowError(NO_BOARDS_PROVIDED_ERROR);
 	});
 	test('should be able to compute winning board score from example input', () => {
 		const solver = new BingoSolver(exampleBoards, exampleDrawnNumbers);

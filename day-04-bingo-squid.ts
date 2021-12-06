@@ -1,5 +1,5 @@
-export const NO_DRAWN_NUMBERS_PROVIDED_ERROR = new Error('There are no drawn numbers');
-export const NO_BOARDS_PROVIDED_ERROR = new Error('There are no drawn numbers');
+export const NO_DRAWN_NUMBERS_PROVIDED_ERROR = new Error('No drawn numbers provided');
+export const NO_BOARDS_PROVIDED_ERROR = new Error('No board numbers provided');
 export const NO_WINNING_BOARDS_ERROR = new Error('There are no winning boards');
 
 export interface WinningBoardResult {

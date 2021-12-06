@@ -3,8 +3,10 @@ import { commands } from './day-02-dive.input';
 
 describe('Day 2 - Dive', () => {
 	test('should throw Error for unknown commands', () => {
-		const measurer = new DiverCommandsInterpreter([['unknown', 1]]);
-		expect(() => measurer.computeOffsetFromCommands()).toThrowError();
+		expect(() => {
+			const measurer = new DiverCommandsInterpreter([['unknown', 1]]);
+			measurer.computeOffsetFromCommands();
+		}).toThrowError();
 	});
 	test('should return [0, 0] for no commands', () => {
 		const measurer = new DiverCommandsInterpreter([]);
