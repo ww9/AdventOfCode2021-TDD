@@ -6,14 +6,7 @@ export const enum Commands {
 	down = 'down',
 }
 
-export default class DiverCommandsInterpreter {
-	private commands: [string, number][] = [];
-
-	constructor(commands: [string, number][]) {
-		this.commands = commands;
-	}
-
-	/* --- Day 2: Dive! ---
+/* --- Day 2: Dive! ---
 	https://adventofcode.com/2021/day/2
 
 	Now, you need to figure out how to pilot this thing.
@@ -45,29 +38,29 @@ export default class DiverCommandsInterpreter {
 
 	Calculate the horizontal position and depth you would have after following the planned course. What do you get if you multiply your final horizontal position by your final depth?
 	*/
-	computeOffsetFromCommands(): [offsetX: number, depth: number] {
-		let offsetX = 0;
-		let offsetY = 0;
-		for (let i = 0; i < this.commands.length; i++) {
-			switch (this.commands[i][0]) {
-				case Commands.forward:
-					offsetX += this.commands[i][1];
-					break;
-				case Commands.up:
-					offsetY -= this.commands[i][1];
-					break;
-				case Commands.down:
-					offsetY += this.commands[i][1];
-					break;
+export let computeOffsetFromCommands = function (commands: [string, number][]): [offsetX: number, depth: number] {
+	let offsetX = 0;
+	let offsetY = 0;
+	for (let i = 0; i < commands.length; i++) {
+		switch (commands[i][0]) {
+			case Commands.forward:
+				offsetX += commands[i][1];
+				break;
+			case Commands.up:
+				offsetY -= commands[i][1];
+				break;
+			case Commands.down:
+				offsetY += commands[i][1];
+				break;
 
-				default:
-					throw UNNEXPECTED_COMMAND_ERROR;
-			}
+			default:
+				throw UNNEXPECTED_COMMAND_ERROR;
 		}
-		return [offsetX, offsetY];
 	}
+	return [offsetX, offsetY];
+};
 
-	/* --- Part Two ---
+/* --- Part Two ---
 	Based on your calculations, the planned course doesn't seem to make any sense. You find the submarine manual and discover that the process is actually slightly more complicated.
 
 	In addition to horizontal position and depth, you'll also need to track a third value, aim, which also starts at 0. The commands also mean something entirely different than you first thought:
@@ -90,27 +83,26 @@ export default class DiverCommandsInterpreter {
 	After following these new instructions, you would have a horizontal position of 15 and a depth of 60. (Multiplying these produces 900.)
 	*/
 
-	computeOffsetFromCommandsWithAim(): [offsetX: number, depth: number] {
-		let offsetX = 0;
-		let offsetY = 0;
-		let aim = 0;
-		for (let i = 0; i < this.commands.length; i++) {
-			switch (this.commands[i][0]) {
-				case Commands.down:
-					aim += this.commands[i][1];
-					break;
-				case Commands.up:
-					aim -= this.commands[i][1];
-					break;
-				case Commands.forward:
-					offsetX += this.commands[i][1];
-					offsetY += aim * this.commands[i][1];
-					break;
+export let computeOffsetFromCommandsWithAim = function (commands: [string, number][]): [offsetX: number, depth: number] {
+	let offsetX = 0;
+	let offsetY = 0;
+	let aim = 0;
+	for (let i = 0; i < commands.length; i++) {
+		switch (commands[i][0]) {
+			case Commands.down:
+				aim += commands[i][1];
+				break;
+			case Commands.up:
+				aim -= commands[i][1];
+				break;
+			case Commands.forward:
+				offsetX += commands[i][1];
+				offsetY += aim * commands[i][1];
+				break;
 
-				default:
-					throw UNNEXPECTED_COMMAND_ERROR;
-			}
+			default:
+				throw UNNEXPECTED_COMMAND_ERROR;
 		}
-		return [offsetX, offsetY];
 	}
-}
+	return [offsetX, offsetY];
+};

@@ -4,14 +4,7 @@ export const INVALID_BINARY_CHARACTER_ERROR = new Error('Invalid binary characte
 export const COULD_NOT_DETERMINE_OXYGEN_RATING_ERROR = new Error('Could not determine oxygen rating');
 export const COULD_NOT_DETERMINE_CO2_SCRUBBER_RATING_ERROR = new Error('Could not determines CO2 Scrubber rating');
 
-export class DiagnosticReportCalculator {
-	private binaryNumbers: string[] = [];
-
-	constructor(binaryNumbers: string[]) {
-		this.binaryNumbers = binaryNumbers;
-	}
-
-	/* --- Day 3: Binary Diagnostic ---
+/* --- Day 3: Binary Diagnostic ---
 	The submarine has been making some odd creaking noises, so you ask it to produce a diagnostic report just in case.
 
 	The diagnostic report (your puzzle input) consists of a list of binary numbers which, when decoded properly, can tell you many useful things about the conditions of the submarine. The first parameter to check is the power consumption.
@@ -44,33 +37,34 @@ export class DiagnosticReportCalculator {
 
 	Use the binary numbers in your diagnostic report to calculate the gamma rate and epsilon rate, then multiply them together. What is the power consumption of the submarine? (Be sure to represent your answer in decimal, not binary.)
 	*/
-	computeEpsilonAndGamma(): [gamma: number, epsilon: number] {
-		if (this.binaryNumbers.length <= 0) {
-			throw EMPTY_READINGS_ERROR;
-		}
-		const inputLength = this.binaryNumbers[0].length;
-		let gammaBinary = '';
-		let epsilonBinary = '';
-		for (let i = 0; i < inputLength; i++) {
-			let zeroesCount = 0;
-			let onesCount = 0;
-			for (const binaryNumber of this.binaryNumbers) {
-				if (binaryNumber[i] === '0') {
-					zeroesCount++;
-				} else {
-					onesCount++;
-				}
-			}
-			if (zeroesCount == onesCount) {
-				throw UNCERTAIN_OUTCOME_ERROR;
-			}
-			gammaBinary += zeroesCount > onesCount ? '0' : '1';
-			epsilonBinary += zeroesCount > onesCount ? '1' : '0';
-		}
-		return [parseInt(gammaBinary, 2), parseInt(epsilonBinary, 2)];
+export let computeEpsilonAndGamma = function (binaryNumbers: string[]): [gamma: number, epsilon: number] {
+	if (binaryNumbers.length <= 0) {
+		throw EMPTY_READINGS_ERROR;
 	}
 
-	/* --- Part Two ---
+	const inputLength = binaryNumbers[0].length;
+	let gammaBinary = '';
+	let epsilonBinary = '';
+	for (let i = 0; i < inputLength; i++) {
+		let zeroesCount = 0;
+		let onesCount = 0;
+		for (const binaryNumber of binaryNumbers) {
+			if (binaryNumber[i] === '0') {
+				zeroesCount++;
+			} else {
+				onesCount++;
+			}
+		}
+		if (zeroesCount == onesCount) {
+			throw UNCERTAIN_OUTCOME_ERROR;
+		}
+		gammaBinary += zeroesCount > onesCount ? '0' : '1';
+		epsilonBinary += zeroesCount > onesCount ? '1' : '0';
+	}
+	return [parseInt(gammaBinary, 2), parseInt(epsilonBinary, 2)];
+};
+
+/* --- Part Two ---
 	Next, you should verify the life support rating, which can be determined by multiplying the oxygen generator rating by the CO2 scrubber rating.
 
 	Both the oxygen generator rating and the CO2 scrubber rating are values that can be found in your diagnostic report - finding them is the tricky part. Both values are located using a similar process that involves filtering out values until only one remains. Before searching for either rating value, start with the full list of binary numbers from your diagnostic report and consider just the first bit of those numbers. Then:
@@ -101,62 +95,61 @@ export class DiagnosticReportCalculator {
 	Use the binary numbers in your diagnostic report to calculate the oxygen generator rating and CO2 scrubber rating, then multiply them together. What is the life support rating of the submarine? (Be sure to represent your answer in decimal, not binary.)
 	*/
 
-	filterForRating(binaryNumbers: string[], digitPositionToAnalyze: number, keepNumbersWithMostCommon: boolean, ifTiedThenPick: '0' | '1'): string[] {
-		let zeroesCount = 0;
-		let onesCount = 0;
-		let numbersWithZero: string[] = [];
-		let numbersWithOne: string[] = [];
-		for (const binaryNumber of binaryNumbers) {
-			switch (binaryNumber[digitPositionToAnalyze]) {
-				case '0':
-					zeroesCount++;
-					numbersWithZero.push(binaryNumber);
-					break;
-				case '1':
-					onesCount++;
-					numbersWithOne.push(binaryNumber);
-					break;
-				default:
-					throw INVALID_BINARY_CHARACTER_ERROR;
-			}
+let filterForRating = function (binaryNumbers: string[], digitPositionToAnalyze: number, keepNumbersWithMostCommon: boolean, ifTiedThenPick: '0' | '1'): string[] {
+	let zeroesCount = 0;
+	let onesCount = 0;
+	let numbersWithZero: string[] = [];
+	let numbersWithOne: string[] = [];
+	for (const binaryNumber of binaryNumbers) {
+		switch (binaryNumber[digitPositionToAnalyze]) {
+			case '0':
+				zeroesCount++;
+				numbersWithZero.push(binaryNumber);
+				break;
+			case '1':
+				onesCount++;
+				numbersWithOne.push(binaryNumber);
+				break;
+			default:
+				throw INVALID_BINARY_CHARACTER_ERROR;
 		}
-		let keepNumbersWith: '0' | '1';
-		if (zeroesCount == onesCount) {
-			keepNumbersWith = ifTiedThenPick;
-		} else if (keepNumbersWithMostCommon) {
-			keepNumbersWith = zeroesCount > onesCount ? '0' : '1';
-		} else {
-			keepNumbersWith = zeroesCount > onesCount ? '1' : '0';
+	}
+	let keepNumbersWith: '0' | '1';
+	if (zeroesCount == onesCount) {
+		keepNumbersWith = ifTiedThenPick;
+	} else if (keepNumbersWithMostCommon) {
+		keepNumbersWith = zeroesCount > onesCount ? '0' : '1';
+	} else {
+		keepNumbersWith = zeroesCount > onesCount ? '1' : '0';
+	}
+	if (keepNumbersWith == '0') {
+		return numbersWithZero;
+	}
+	return numbersWithOne;
+};
+
+export let computeLifeSupportRating = function (binaryNumbers: string[]): number {
+	const readingLength = binaryNumbers[0].length;
+
+	let oxygenBinaryNumbers = [...binaryNumbers]; // most common, ties with 1
+	for (let i = 0; i < readingLength && oxygenBinaryNumbers.length > 1; i++) {
+		const currentLength = oxygenBinaryNumbers.length;
+		oxygenBinaryNumbers = filterForRating(oxygenBinaryNumbers, i, true, '1');
+		if (oxygenBinaryNumbers.length == currentLength) {
+			throw COULD_NOT_DETERMINE_OXYGEN_RATING_ERROR;
 		}
-		if (keepNumbersWith == '0') {
-			return numbersWithZero;
-		}
-		return numbersWithOne;
 	}
 
-	computeLifeSupportRating(): number {
-		const readingLength = this.binaryNumbers[0].length;
-
-		let oxygenBinaryNumbers = [...this.binaryNumbers]; // most common, ties with 1
-		for (let i = 0; i < readingLength && oxygenBinaryNumbers.length > 1; i++) {
-			const currentLength = oxygenBinaryNumbers.length;
-			oxygenBinaryNumbers = this.filterForRating(oxygenBinaryNumbers, i, true, '1');
-			if (oxygenBinaryNumbers.length == currentLength) {
-				throw COULD_NOT_DETERMINE_OXYGEN_RATING_ERROR;
-			}
+	let co2ScrubberBinaryNumbers = [...binaryNumbers]; // least common, ties with 0
+	for (let i = 0; i < readingLength && co2ScrubberBinaryNumbers.length > 1; i++) {
+		const currentLength = co2ScrubberBinaryNumbers.length;
+		co2ScrubberBinaryNumbers = filterForRating(co2ScrubberBinaryNumbers, i, false, '0');
+		if (co2ScrubberBinaryNumbers.length == currentLength) {
+			throw COULD_NOT_DETERMINE_CO2_SCRUBBER_RATING_ERROR;
 		}
-
-		let co2ScrubberBinaryNumbers = [...this.binaryNumbers]; // least common, ties with 0
-		for (let i = 0; i < readingLength && co2ScrubberBinaryNumbers.length > 1; i++) {
-			const currentLength = co2ScrubberBinaryNumbers.length;
-			co2ScrubberBinaryNumbers = this.filterForRating(co2ScrubberBinaryNumbers, i, false, '0');
-			if (co2ScrubberBinaryNumbers.length == currentLength) {
-				throw COULD_NOT_DETERMINE_CO2_SCRUBBER_RATING_ERROR;
-			}
-		}
-
-		let oxygenGeneratorRating = parseInt(oxygenBinaryNumbers[0], 2);
-		let co2ScrubberRating = parseInt(co2ScrubberBinaryNumbers[0], 2);
-		return oxygenGeneratorRating * co2ScrubberRating;
 	}
-}
+
+	let oxygenGeneratorRating = parseInt(oxygenBinaryNumbers[0], 2);
+	let co2ScrubberRating = parseInt(co2ScrubberBinaryNumbers[0], 2);
+	return oxygenGeneratorRating * co2ScrubberRating;
+};
