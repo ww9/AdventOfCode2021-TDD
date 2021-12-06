@@ -1,2 +1,5 @@
 node_modules
 coverage
+
+# Temporary until we configure CI
+.ci
