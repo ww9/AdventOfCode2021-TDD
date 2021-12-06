@@ -33,6 +33,6 @@ describe('Day 4 - Bingo Squid', () => {
 		let result = solver.computeLastWinningBoard();
 		const sumOfUnmarked = result.unmarkedNumbers.reduce((sum: number, num: number) => sum + num, 0);
 		const score = result.lastDrawnNumber * sumOfUnmarked;
-		expect(score).toEqual(1924);
+		expect(score).toEqual(1827);
 	});
 });
