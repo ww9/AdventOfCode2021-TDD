@@ -15,3 +15,5 @@ Then run `npm run tdd` to automatically run tests when a file changes.
 # Todo
 
 - Code coverage? https://jestjs.io/docs/configuration#collectcoverage-boolean
+- CI with Github Actions
+- .editorconfig? https://github.com/viceroypenguin/adventofcode/blob/master/.editorconfig
