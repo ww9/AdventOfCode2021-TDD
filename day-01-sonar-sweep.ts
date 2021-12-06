@@ -1,4 +1,4 @@
-export default class DeeperMeasurementsCounter {
+export class DeeperMeasurementsCounter {
 	private depthReadings: number[] = [];
 
 	constructor(depthReadings: number[]) {
